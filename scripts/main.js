@@ -17,9 +17,9 @@
 //   amp343
 //
 
-import leaders from './leaders'
-import rainout from './rainout'
-import scout from './scout'
+// import leaders from './leaders'
+// import rainout from './rainout'
+// import scout from './scout'
 
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
