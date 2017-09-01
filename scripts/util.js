@@ -1,5 +1,7 @@
 export const codeBlock = str =>
-  '```' + str + '```'
+  str
+    ? '```' + str + '```'
+    : ''
 
 export const valueOrEmpty = val =>
   val ? val : ''
