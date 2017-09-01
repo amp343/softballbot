@@ -1,18 +1,19 @@
 import _ from 'lodash'
 import moment from 'moment'
 import { robotBrainGet, robotBrainSet } from './brain'
+import { gamedayMsg } from './gameday'
 
 export const alreadyCheckedInMsg = username =>
-  `${username} is already checked in`
+  gamedayMsg(`${username} is already checked in`)
 
 export const alreadyCheckedOutMsg = username =>
-  `${username} is already checked out`
+  gamedayMsg(`${username} is already checked out`)
 
 export const checkedInMsg = username =>
-  `Checked in ${username}`
+  gamedayMsg(`Checked in ${username}`)
 
 export const checkedOutMsg = username =>
-  `Checked out ${username}`
+  gamedayMsg(`Checked out ${username}`)
 
 export const checkIn = (user, robot) =>
   getCheckedInUsers(robot)
@@ -35,6 +36,10 @@ export const checkOut = (user, robot) =>
 export const getCheckedInUsers = robot =>
   robotBrainGet(robot, getGameKey())
   .then(users => users || [])
+
+export const getCheckedInUsersMsg = robot =>
+  getCheckedInUsers(robot)
+  .then(users => gamedayMsg(users.join('\n')))
 
 export const getGameKey = () =>
   `${moment().format('YYYYMMDD')}_checkin`

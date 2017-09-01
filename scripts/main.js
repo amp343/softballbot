@@ -16,7 +16,7 @@
 //   amp343
 //
 
-import { checkIn, checkOut, getCheckedInUsers } from './checkin'
+import { checkIn, checkOut, getCheckedInUsersMsg } from './checkin'
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
 import { getConfig } from './config'
@@ -30,6 +30,7 @@ import { getMsgUser } from './util'
 export const send = (msg, promise) =>
   promise()
   .then(result => msg.send(result))
+
 
 module.exports = robot => {
   //
@@ -104,10 +105,7 @@ module.exports = robot => {
   )
 
   robot.hear(/^whoin$/i, msg =>
-    send(msg, () =>
-      getCheckedInUsers(robot)
-      .then(users => users.join('\n'))
-    )
+    send(msg, () => getCheckedInUsersMsg(robot))
   )
 }
 
