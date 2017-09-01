@@ -3,14 +3,24 @@ import { codeBlock, valueOrEmpty } from './util'
 
 
 export class Table {
-  constructor(columns, rows, headerDelim = '=', colDelim = '|', cellPadding = 1) {
+  constructor(columns, rows, opts = {}) {
     this.rows = rows
+    this.opts = this.initOptions(opts)
     // decorate the incoming columns with max lengths
     // for table formatting
-    this.headerDelim = headerDelim
-    this.colDelim = colDelim
-    this.cellPadding = cellPadding
     this.columns = this.initColumns(columns)
+  }
+
+  initOptions(options) {
+    return Object.assign(this.getDefaultOptions(), options)
+  }
+
+  getDefaultOptions() {
+    return {
+      cellPadding: 1,
+      colDelim: '',
+      headerDelim: '=',
+    }
   }
 
   initColumns(columns) {
@@ -21,32 +31,32 @@ export class Table {
         const cellVal = col.accessor(row)
         const cellValLen = this.countCellLen(cellVal)
         return cellValLen > c ? cellValLen : c
-      }, col.label.length + (this.cellPadding * 2))
+      }, col.label.length + (this.opts.cellPadding * 2))
       return col
     })
   }
 
   countCellLen(value) {
-    return (value ? value.length : 0) + (this.cellPadding * 2)
+    return (value ? value.length : 0) + (this.opts.cellPadding * 2)
   }
 
   getTotalRowLength() {
     return this.columns.reduce((c, col) =>
       c + col.maxLen,
       0
-    ) + (this.columns.length * this.colDelim.length) + this.colDelim.length
+    ) + (this.columns.length * this.opts.colDelim.length) + this.opts.colDelim.length
   }
 
   buildHeaderSeparator() {
-    return this.headerDelim.repeat(this.getTotalRowLength())
+    return this.opts.headerDelim.repeat(this.getTotalRowLength())
   }
 
   wrapRow(row) {
-    return `${this.colDelim}${row}${this.colDelim}`
+    return `${this.opts.colDelim}${row}${this.opts.colDelim}`
   }
 
   padCell(cell) {
-    const pad = ' '.repeat(this.cellPadding)
+    const pad = ' '.repeat(this.opts.cellPadding)
     return `${pad}${cell}${pad}`
   }
 
@@ -54,7 +64,7 @@ export class Table {
     const headerSeparator = this.buildHeaderSeparator()
     const headerRow = this.columns.map(col =>
       this.buildCell(col.label, col.maxLen)
-    ).join(this.colDelim)
+    ).join(this.opts.colDelim)
 
     return [
       headerSeparator,
@@ -69,7 +79,7 @@ export class Table {
         valueOrEmpty(col.accessor(row)),
         col.maxLen
       )
-    ).join(this.colDelim)
+    ).join(this.opts.colDelim)
     return this.wrapRow(rowStr)
   }
 
@@ -79,7 +89,7 @@ export class Table {
 
   buildCell(value, maxLen) {
     const valueLen = value ? value.length : 0
-    const pad = this.cellPadding * 2
+    const pad = this.opts.cellPadding * 2
     const spaceCount = Math.max(maxLen - valueLen - pad, 0)
     const spaces = ' '.repeat(spaceCount)
     const cell = `${value}${spaces}`

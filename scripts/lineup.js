@@ -4,10 +4,10 @@ import { Table, TableColumn } from './table'
 import { valueOrDash } from './util'
 
 
-export const getLineupTable = (ssKey, ssIdx, ssRange) =>
+export const getLineupTable = (ssKey, ssIdx, ssRange, tableOpts = {}) =>
   fetchLineup(ssKey, ssIdx, ssRange)
   .then(parseLineup)
-  .then(buildLineupTable)
+  .then(lineup => buildLineupTable(lineup, tableOpts))
 
 export const getLineupMessage = (ssKey, ssIdx, ssRange) =>
   fetchLineup(ssKey, ssIdx, ssRange)
@@ -61,8 +61,8 @@ export const buildTableColumns = lineup =>
     new TableColumn('7', x => valueOrDash(x.innings[6])),
   ]
 
-export const buildLineupTable = lineup =>
-  new Table(buildTableColumns(lineup), lineup, '=', '').buildTableString()
+export const buildLineupTable = (lineup, tableOpts = {}) =>
+  new Table(buildTableColumns(lineup), lineup, tableOpts).buildTableString()
 
 export const buildLineupMessage = lineup =>
   lineup.map(player =>

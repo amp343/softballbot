@@ -78,7 +78,11 @@ module.exports = robot => {
   robot.hear(/^pretty lineup/i, msg =>
     getConfig('lineup')
     .then(({ ssKey, ssIdx, ssRange }) =>
-      send(msg, () => getLineupTable(ssKey, ssIdx, ssRange))
+      send(msg, () => getLineupTable(ssKey, ssIdx, ssRange, {
+        colDelim: '',
+        headerDelim: '-',
+        cellPadding: 1
+      }))
     )
   )
 
