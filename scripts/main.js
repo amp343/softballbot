@@ -5,21 +5,15 @@
 //   None
 //
 // Commands:
-//   leaders <stat> - Display the <stat> leaders
 //   motivate - Motivate the team with an inspirational quote
 //   depress - Depress the team with a morose quote
 //   gameon - Is our game on?
-//   scout <teamName> - Get a scouting report for <teamName>
 //   weather - Get a weather report
 //   lineup - Get the lineup
 //
 // Author:
 //   amp343
 //
-
-// import leaders from './leaders'
-// import rainout from './rainout'
-// import scout from './scout'
 
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
@@ -79,16 +73,16 @@ module.exports = robot => {
 
 }
 
-  //
-  // #
-  // # show stat leaders
-  // #
-  // robot.hear /leaders/i, (msg) ->
-  //   send msg, () -> leaders.getMessage msg
+//
+// #
+// # show stat leaders
+// #
+// robot.hear /leaders/i, (msg) ->
+//   send msg, () -> leaders.getMessage msg
 
-  // #
-  // # print a scouting report
-  // #
-  // robot.hear /^scout/i, (msg) ->
-  //   send msg, () -> scout.getMessage msg
-  //
+// #
+// # print a scouting report
+// #
+// robot.hear /^scout/i, (msg) ->
+//   send msg, () -> scout.getMessage msg
+//

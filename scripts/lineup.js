@@ -1,5 +1,13 @@
+import _ from 'lodash'
 import GoogleSpreadsheet from 'google-spreadsheet'
+import { Table, TableColumn } from './table'
+import { valueOrDash } from './util'
 
+
+export const getLineupTable = (ssKey, ssIdx, ssRange) =>
+  fetchLineup(ssKey, ssIdx, ssRange)
+  .then(parseLineup)
+  .then(buildLineupTable)
 
 export const getLineupMessage = (ssKey, ssIdx, ssRange) =>
   fetchLineup(ssKey, ssIdx, ssRange)
@@ -39,9 +47,24 @@ export const transformPerson = person => ({
   ]
 })
 
-export const buildLineupMessage = lineup =>
-  lineup.map(buildLineupPlayerMessage).join('\n')
+export const buildTableColumns = lineup =>
+  [
+    new TableColumn('#', x => x.order),
+    new TableColumn('Name', x => x.name),
+    new TableColumn('Inn', x => null),
+    new TableColumn('1', x => valueOrDash(x.innings[0])),
+    new TableColumn('2', x => valueOrDash(x.innings[1])),
+    new TableColumn('3', x => valueOrDash(x.innings[2])),
+    new TableColumn('4', x => valueOrDash(x.innings[3])),
+    new TableColumn('5', x => valueOrDash(x.innings[4])),
+    new TableColumn('6', x => valueOrDash(x.innings[5])),
+    new TableColumn('7', x => valueOrDash(x.innings[6])),
+  ]
 
-export const buildLineupPlayerMessage = player =>
-  `*${player.order} - ${player.name}* - `
-  + player.innings.map(x => x || '-' ).join(',')
+export const buildLineupTable = lineup =>
+  new Table(buildTableColumns(lineup), lineup, '=', '').buildTableString()
+
+export const buildLineupMessage = lineup =>
+  lineup.map(player =>
+    `*${player.order}* ${player.name}: ${player.innings.map(valueOrDash).join(', ')}`
+  ).join('\n')
