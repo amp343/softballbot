@@ -10,6 +10,7 @@
 //   gameon - Is our game on?
 //   weather - Get a weather report
 //   lineup - Get the lineup
+//   pretty lineup - Get the lineup as a nice table
 //
 // Author:
 //   amp343
