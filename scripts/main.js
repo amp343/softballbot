@@ -19,7 +19,7 @@ import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
 import { getConfig } from './config'
 import { getRainoutMessage } from './rainout'
-import { getLineupMessage } from './lineup'
+import { getLineupMessage, getLineupTable } from './lineup'
 
 //
 // interface for sending a message
