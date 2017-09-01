@@ -71,6 +71,16 @@ module.exports = robot => {
     )
   )
 
+  //
+  // print the lineup in a table
+  //
+  robot.hear(/^pretty lineup/i, msg =>
+    getConfig('lineup')
+    .then(({ ssKey, ssIdx, ssRange }) =>
+      send(msg, () => getLineupTable(ssKey, ssIdx, ssRange))
+    )
+  )
+
 }
 
 //
