@@ -6,3 +6,6 @@ export const valueOrEmpty = val =>
 
 export const valueOrDash = val =>
   val ? val : '-'
+
+export const getMsgUser = msg =>
+  Promise.resolve(msg.message.user)

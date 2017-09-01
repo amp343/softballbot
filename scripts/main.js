@@ -16,11 +16,13 @@
 //   amp343
 //
 
+import { checkIn, checkOut, getCheckedInUsers } from './checkin'
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
 import { getConfig } from './config'
 import { getRainoutMessage } from './rainout'
 import { getLineupMessage, getLineupTable } from './lineup'
+import { getMsgUser } from './util'
 
 //
 // interface for sending a message
@@ -28,7 +30,6 @@ import { getLineupMessage, getLineupTable } from './lineup'
 export const send = (msg, promise) =>
   promise()
   .then(result => msg.send(result))
-
 
 module.exports = robot => {
   //
@@ -49,9 +50,9 @@ module.exports = robot => {
   // print a weather report
   //
   robot.hear(/^weather/i, msg =>
-    getConfig('weather')
-    .then(({ apiKey, lat, lng }) =>
-      send(msg, () => getWeatherMessage(apiKey, lat, lng))
+    send(msg, () =>
+      getConfig('weather')
+      .then(({ apiKey, lat, lng }) => getWeatherMessage(apiKey, lat, lng))
     )
   )
 
@@ -66,9 +67,9 @@ module.exports = robot => {
   // print the lineup
   //
   robot.hear(/^lineup/i, msg =>
-    getConfig('lineup')
-    .then(({ ssKey, ssIdx, ssRange }) =>
-      send(msg, () => getLineupMessage(ssKey, ssIdx, ssRange))
+    send(msg, () =>
+      getConfig('lineup')
+      .then(({ ssKey, ssIdx, ssRange }) => getLineupMessage(ssKey, ssIdx, ssRange))
     )
   )
 
@@ -76,16 +77,38 @@ module.exports = robot => {
   // print the lineup in a table
   //
   robot.hear(/^pretty lineup/i, msg =>
-    getConfig('lineup')
-    .then(({ ssKey, ssIdx, ssRange }) =>
-      send(msg, () => getLineupTable(ssKey, ssIdx, ssRange, {
-        colDelim: '',
-        headerDelim: '-',
-        cellPadding: 1
-      }))
+    send(msg, () =>
+      getConfig('lineup')
+      .then(({ ssKey, ssIdx, ssRange }) =>
+        getLineupTable(ssKey, ssIdx, ssRange, {
+          cellPadding: 1,
+          colDelim: '',
+          headerDelim: '-',
+        })
+      )
     )
   )
 
+  robot.hear(/^checkin$/i, msg =>
+    send(msg, () =>
+      getMsgUser(msg)
+      .then(user => checkIn(user, robot))
+    )
+  )
+
+  robot.hear(/^checkout$/i, msg =>
+    send(msg, () =>
+      getMsgUser(msg)
+      .then(user => checkOut(user, robot))
+    )
+  )
+
+  robot.hear(/^whoin$/i, msg =>
+    send(msg, () =>
+      getCheckedInUsers(robot)
+      .then(users => users.join('\n'))
+    )
+  )
 }
 
 //
