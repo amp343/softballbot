@@ -29,7 +29,7 @@ export const checkOut = (user, robot, gameNumber) =>
   getCheckedInUsers(robot, gameNumber)
   .then(users =>
     _.includes(users, user.name)
-      ? robotBrainSet(robot, getGameKey(gameNumber), _.remove(users, user.name))
+      ? robotBrainSet(robot, getGameKey(gameNumber), _.without(users, user.name))
         .then(x => checkedOutMsg(user.name, gameNumber))
       : alreadyCheckedOutMsg(user.name, gameNumber)
   )
