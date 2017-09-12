@@ -46,7 +46,7 @@ export const getCheckedInUsersMsg = (robot, gameNumber) =>
 
 export const formatCheckedInUsersMsg = (users, gameNumber) =>
   [`*Game ${gameNumber}*`, ''].concat(
-    users.length ? users : ['-']
+    users.length ? users : ['<< crickets >>']
   ).join('\n')
 
 export const getGameKey = gameNumber =>
