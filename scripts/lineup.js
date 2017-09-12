@@ -31,7 +31,12 @@ export const fetchLineup = (ssKey, ssIdx, ssRange) =>
   fetchWorksheet(ssKey, ssIdx, ssRange)
 
 export const parseLineup = lineup =>
-  lineup.map(transformPerson)
+  shouldPublish(lineup)
+    ? lineup.map(transformPerson)
+    : []
+
+export const shouldPublish = lineup =>
+  lineup[0].publish === 'TRUE'
 
 export const transformPerson = person => ({
   order: person.order,
@@ -65,6 +70,8 @@ export const buildLineupTable = (lineup, tableOpts = {}) =>
   new Table(buildTableColumns(lineup), lineup, tableOpts).buildTableString()
 
 export const buildLineupMessage = lineup =>
-  lineup.map(player =>
-    `*${player.order}* ${player.name}: ${player.innings.map(valueOrDash).join(', ')}`
-  ).join('\n')
+  lineup.length > 0
+    ? lineup.map(player =>
+      `*${player.order}* ${player.name}: ${player.innings.map(valueOrDash).join(', ')}`
+    ).join('\n')
+    : 'Lineup not yet set'

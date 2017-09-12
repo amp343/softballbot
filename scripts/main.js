@@ -20,6 +20,7 @@ import { checkIn, checkOut, getCheckedInUsersMsg } from './checkin'
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
 import { getConfig } from './config'
+import { getNextGameNumber } from './gameday'
 import { getRainoutMessage } from './rainout'
 import { getLineupMessage, getLineupTable } from './lineup'
 import { getMsgUser } from './util'
@@ -91,21 +92,21 @@ module.exports = robot => {
   )
 
   robot.hear(/^checkin$/i, msg =>
-    send(msg, () =>
-      getMsgUser(msg)
-      .then(user => checkIn(user, robot))
+    send(msg, async () =>
+      checkIn(await getMsgUser(msg), robot, await getNextGameNumber())
     )
   )
 
   robot.hear(/^checkout$/i, msg =>
-    send(msg, () =>
-      getMsgUser(msg)
-      .then(user => checkOut(user, robot))
+    send(msg, async () =>
+      checkOut(await getMsgUser(msg), robot, await getNextGameNumber())
     )
   )
 
   robot.hear(/^whoin$/i, msg =>
-    send(msg, () => getCheckedInUsersMsg(robot))
+    send(msg, async () =>
+      getCheckedInUsersMsg(robot, await getNextGameNumber())
+    )
   )
 }
 

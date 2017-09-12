@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
+import { getConfig } from './config'
 import { codeBlock } from './util'
 
 export const gamedayMsg = msg => {
@@ -31,4 +32,11 @@ export const getDaysTilGameday = () => {
 }
 
 export const isGameday = () =>
-  moment().weekday() === 3
+  _.includes(getGamedays(), moment().weekday())
+
+export const getGamedays = () =>
+  [2, 3]
+
+export const getNextGameNumber = () =>
+  getConfig('games').
+  then(cfg => cfg.next)

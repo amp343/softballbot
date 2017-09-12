@@ -1,45 +1,53 @@
 import _ from 'lodash'
 import moment from 'moment'
 import { robotBrainGet, robotBrainSet } from './brain'
+import { getConfig } from './config'
 import { gamedayMsg } from './gameday'
 
-export const alreadyCheckedInMsg = username =>
-  gamedayMsg(`${username} is already checked in`)
+export const alreadyCheckedInMsg = (username, gameNumber) =>
+  gamedayMsg(`${username} is already checked in for game ${gameNumber}`)
 
-export const alreadyCheckedOutMsg = username =>
-  gamedayMsg(`${username} is already checked out`)
+export const alreadyCheckedOutMsg = (username, gameNumber) =>
+  gamedayMsg(`${username} is already checked out for game ${gameNumber}`)
 
-export const checkedInMsg = username =>
-  gamedayMsg(`Checked in ${username}`)
+export const checkedInMsg = (username, gameNumber) =>
+  gamedayMsg(`Checked in ${username} for game ${gameNumber}`)
 
-export const checkedOutMsg = username =>
-  gamedayMsg(`Checked out ${username}`)
+export const checkedOutMsg = (username, gameNumber) =>
+  gamedayMsg(`Checked out ${username} for game ${gameNumber}`)
 
-export const checkIn = (user, robot) =>
-  getCheckedInUsers(robot)
+export const checkIn = (user, robot, gameNumber) =>
+  getCheckedInUsers(robot, gameNumber)
   .then(users =>
     _.includes(users, user.name)
-      ? alreadyCheckedInMsg(user.name)
-      : robotBrainSet(robot, getGameKey(), users.concat(user.name))
-        .then(x => checkedInMsg(user.name))
+      ? alreadyCheckedInMsg(user.name, gameNumber)
+      : robotBrainSet(robot, getGameKey(gameNumber), users.concat(user.name))
+        .then(x => checkedInMsg(user.name, gameNumber))
   )
 
-export const checkOut = (user, robot) =>
-  getCheckedInUsers(robot)
+export const checkOut = (user, robot, gameNumber) =>
+  getCheckedInUsers(robot, gameNumber)
   .then(users =>
     _.includes(users, user.name)
-      ? robotBrainSet(robot, getGameKey(), _.remove(users, user.name))
-        .then(x => checkedOutMsg(user.name))
-      : alreadyCheckedOutMsg(user.name)
+      ? robotBrainSet(robot, getGameKey(gameNumber), _.remove(users, user.name))
+        .then(x => checkedOutMsg(user.name, gameNumber))
+      : alreadyCheckedOutMsg(user.name, gameNumber)
   )
 
-export const getCheckedInUsers = robot =>
-  robotBrainGet(robot, getGameKey())
+export const getCheckedInUsers = (robot, gameNumber) =>
+  robotBrainGet(robot, getGameKey(gameNumber))
   .then(users => users || [])
 
-export const getCheckedInUsersMsg = robot =>
-  getCheckedInUsers(robot)
-  .then(users => gamedayMsg(users.join('\n')))
+export const getCheckedInUsersMsg = (robot, gameNumber) =>
+  getCheckedInUsers(robot, gameNumber)
+  .then(users => gamedayMsg(
+    formatCheckedInUsersMsg(users, gameNumber)
+  ))
 
-export const getGameKey = () =>
-  `${moment().format('YYYYMMDD')}_checkin`
+export const formatCheckedInUsersMsg = (users, gameNumber) =>
+  [`*Game ${gameNumber}*`, ''].concat(
+    users.length ? users : ['-']
+  ).join('\n')
+
+export const getGameKey = gameNumber =>
+  `game_${gameNumber}_checkin`

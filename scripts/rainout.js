@@ -13,13 +13,15 @@ export const parseRainoutMessage = text =>
       : text += ' :smile:'
 
 export const fetchRainoutMessage = () =>
-  new Promise((resolve, reject) =>
-    jsdom.env(
-      "http://rainoutline.com/search/extension/4122127246/60",
-      ["http://code.jquery.com/jquery.js"],
-      (err, window) =>
-        err
-          ? reject(err)
-          : resolve(window.$(".gridcell7 span[class*=status]").text())
-    )
-  )
+  new Promise((resolve, reject) => resolve('Questionable'))
+
+// new Promise((resolve, reject) =>
+//   jsdom.env(
+//     "http://rainoutline.com/search/extension/4122127246/60",
+//     ["http://code.jquery.com/jquery.js"],
+//     (err, window) =>
+//       err
+//         ? reject(err)
+//         : resolve(window.$(".gridcell7 span[class*=status]").text())
+//   )
+// )
