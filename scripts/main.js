@@ -23,7 +23,7 @@ import { getConfig } from './config'
 import { getNextGameNumber } from './gameday'
 import { getRainoutMessage } from './rainout'
 import { getLineupMessage, getLineupTable } from './lineup'
-import { getMsgUser } from './util'
+import { getMentionedUser, getMsgUser } from './util'
 
 //
 // interface for sending a message
@@ -97,9 +97,21 @@ module.exports = robot => {
     )
   )
 
+  robot.hear(/^checkin @/i, msg => {
+    send(msg, async () =>
+      checkIn(getMentionedUser(msg), robot, await getNextGameNumber())
+    )
+  })
+
   robot.hear(/^checkout$/i, msg =>
     send(msg, async () =>
       checkOut(await getMsgUser(msg), robot, await getNextGameNumber())
+    )
+  )
+
+  robot.hear(/^checkout @/i, msg =>
+    send(msg, async () =>
+      checkOut(getMentionedUser(msg), robot, await getNextGameNumber())
     )
   )
 
