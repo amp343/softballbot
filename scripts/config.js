@@ -14,7 +14,8 @@ export const getConfig = (type) =>
     },
     games: {
       next: process.env.NEXT_GAME,
-    }
+    },
+    users: process.env.SLACK_USERS.split(',')
   }).then(cfg =>
     type
       ? cfg[type]

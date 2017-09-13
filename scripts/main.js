@@ -17,6 +17,7 @@
 //
 
 import { checkIn, checkOut, getCheckedInUsersMsg } from './checkin'
+import { getAllUsers, atUser } from './users'
 import { getQuote } from './quotes'
 import { getWeatherMessage } from './weather'
 import { getConfig } from './config'
@@ -119,6 +120,18 @@ module.exports = robot => {
     send(msg, async () =>
       getCheckedInUsersMsg(robot, await getNextGameNumber())
     )
+  )
+
+  robot.hear(/^hiap$/i, msg =>
+    // send(msg, () => Promise.resolve(getAllUsers()))
+    // send(msg, () =>
+    //   getAllUsers()
+    //   .then(x => x.map(atUser))
+    //   .then(x => {
+    //
+    //   })
+    // )
+    robot.messageRoom('@apeters', 'ping')
   )
 }
 
