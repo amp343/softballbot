@@ -3,9 +3,12 @@ import jsdom from 'jsdom'
 
 export const getRainoutMessage = (rainoutUrl) =>
   fetchRainoutMessage(rainoutUrl)
-  .then(parseRainoutMessage)
+  .then(({ status, updatedMsg }) => parseRainoutMessage(status, updatedMsg))
 
-export const parseRainoutMessage = text =>
+export const parseRainoutMessage = (text, updatedMsg) =>
+  `${getStatusMsg(text)} (${updatedMsg})`
+
+export const getStatusMsg = text =>
   text === 'Questionable'
     ? text += ' :neutral_face:'
     : text === 'Canceled'
@@ -17,6 +20,9 @@ export const fetchRainoutMessage = (rainoutUrl) =>
     jsdom.env(rainoutUrl, ["http://code.jquery.com/jquery.js"], (err, window) =>
       err
         ? reject(err)
-        : resolve(window.$(".gridcell7 span[class*=status]").text())
+        : resolve({
+          status: window.$(".gridcell7 span[class*=status]").text(),
+          updatedMsg: window.$(".gridcell7 strong").text(),
+        })
     )
   )
