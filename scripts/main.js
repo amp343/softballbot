@@ -63,7 +63,10 @@ module.exports = robot => {
   // check whether the game is on
   //
   robot.hear(/gameon/i, msg =>
-    send(msg, () => getRainoutMessage())
+    send(msg, () =>
+      getConfig('rainout')
+      .then(({ url }) => getRainoutMessage(url))
+    )
   )
 
   //

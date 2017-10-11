@@ -15,6 +15,9 @@ export const getConfig = (type) =>
     games: {
       next: process.env.NEXT_GAME,
     },
+    rainout: {
+      url: process.env.RAINOUT_URL,
+    },
     users: process.env.SLACK_USERS.split(',')
   }).then(cfg =>
     type
