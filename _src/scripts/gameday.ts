@@ -48,16 +48,16 @@ export const getDayFromMsg = (msg: IMsgObj, matchIdx: number = 0): string => {
   try {
     s = getMatchFromMsg(msg, matchIdx);
   } catch (e) {
-    throw new Error("No day was given in your message. You need to supply the day: 'tues' or 'wed'");
+    throw new Error("No day was given in your message. You need to supply the day: `tues` or `wed`");
   }
   if (["tuesday", "tues", "tue"].includes(s)) {
     return "tues";
   } else if (["wednesday", "wed"].includes(s)) {
     return "wed";
   } else if (s === "") {
-    throw new Error("Doesn't look like you provided a day; try adding 'tues' or 'wed'");
+    throw new Error("Doesn't look like you provided a day; try adding `tues` or `wed`");
   } else {
-    throw new Error(`Did not understand the day in your message: '${s}' is not like 'tues' or 'wed'`);
+    throw new Error(`Did not understand the day in your message: '${s}' is not like \`tues\` or \`wed\``);
   }
 };
 
@@ -71,7 +71,7 @@ export const getUsernameFromMsg = async (msg: IMsgObj, matchIdx: number = 0): Pr
   }
   const allPlayers = await getAllPlayers();
   if (!allPlayers.includes(username)) {
-    throw new Error(`Sorry, I don\'t know ${username}`);
+    throw new Error(`Sorry, I don\"t know ${username}`); "";
   }
   return username;
 };
