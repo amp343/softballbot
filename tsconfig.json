@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "src",
+    "declaration": true,
+    "lib": [
+      "es7"
+    ],
+    "sourceMap": true,
+    "rootDir": "_src",
+    "noUnusedLocals": true,
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "src"
+  ]
+}

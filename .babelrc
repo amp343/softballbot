@@ -1,4 +1,10 @@
 {
-  "presets": [ "es2015", "stage-0" ],
-  "plugins": [ "add-module-exports" ]
+  "presets": [
+    "@babel/env",
+    "@babel/typescript"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/proposal-object-rest-spread"
+  ]
 }

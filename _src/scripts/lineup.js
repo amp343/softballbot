@@ -16,15 +16,16 @@ export const getLineupMessage = (ssKey, ssIdx, ssRange) =>
 
 export const fetchWorksheet = (ssKey, ssIdx, ssRange) =>
   new Promise((resolve, reject) =>
-    new GoogleSpreadsheet(ssKey).getInfo((err, info) =>
-      err
-        ? reject(err)
-        : info.worksheets[ssIdx].getRows((err, rows) =>
-          err
-            ? reject(err)
-            : resolve(rows)
-          )
-    )
+    new GoogleSpreadsheet(ssKey).getInfo((err, info) => {
+      if (err) {
+        reject(err)
+      }
+      return info.worksheets[ssIdx].getRows((err, rows) =>
+        err
+          ? reject(err)
+          : resolve(rows)
+      )
+    })
   )
 
 export const fetchLineup = (ssKey, ssIdx, ssRange) =>

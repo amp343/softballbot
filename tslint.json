@@ -1,0 +1,27 @@
+{
+  "extends": "tslint:recommended",
+  // "linterOptions": {
+  //   "exclude": [
+  //     "src/**/vscode.proposed.d.ts"
+  //   ]
+  // },
+  "rules": {
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
+    "only-arrow-functions": true,
+    "semicolon": [
+      true,
+      "always",
+      "ignore-bound-class-methods"
+    ],
+    "no-null-keyword": false,
+    "no-console": false,
+    "no-empty-interface": false,
+    "callable-types": false,
+    "no-var-requires": false
+  }
+}
