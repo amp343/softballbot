@@ -25,8 +25,7 @@ import { getNextGameNumber } from "./gameday";
 import { getLineupMessage, getLineupTable } from "./lineup";
 import { getQuote } from "./quotes";
 import { getRainoutMessage } from "./rainout";
-// import { assertTuesdayTeam, getMentionedUser, getMsgUser, getMsgUserName } from "./users";
-import { getMentionedUser, getMsgUser } from "./users";
+import { assertTuesdayTeam, getMentionedUser, getMsgUser, getMsgUserName } from "./users";
 import { buildWeatherUrl, getWeatherMessage } from "./weather";
 //
 // interface for sending a message
@@ -34,7 +33,7 @@ import { buildWeatherUrl, getWeatherMessage } from "./weather";
 export const send = R.curry(async (msg: IObj, fn: () => Promise<string>): Promise<any> => {
   // only blessed tuesday team users allowed
   try {
-    // await assertTuesdayTeam(getMsgUserName(msg));
+    await assertTuesdayTeam(getMsgUserName(msg));
     return await program(
       fn,
       (x) => msg.send(x),
