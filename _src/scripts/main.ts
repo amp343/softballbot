@@ -38,7 +38,7 @@ export const send = R.curry(async (msg: IObj, fn: () => Promise<string>): Promis
       (x) => msg.send(x),
     )();
   } catch (e) {
-    msg.send(e);
+    msg.send(e.toString());
     return;
   }
 });
