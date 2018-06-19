@@ -10,7 +10,8 @@
   "scripts": {
     "build": "yarn && tsc --emitDeclarationOnly && babel _src --out-dir src --extensions \".ts,.js\"",
     "start": "npm run build && ./bin/hubot",
-    "start:dev": "docker-compose up -d && yarn start"
+    "start:dev": "docker-compose up -d && yarn start",
+    "start:prod": "npm run build && ./bin/hubot -a slack"
   },
   "dependencies": {
     "dotenv": "^4.0.0",
