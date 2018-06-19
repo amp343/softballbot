@@ -36,3 +36,7 @@ export interface IRainoutResponseJson {
 export interface IUserObj extends IObj{
   name: string;
 }
+
+export interface IMsgObj extends IObj {
+
+}

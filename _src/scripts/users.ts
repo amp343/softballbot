@@ -1,5 +1,5 @@
 import { IObj, IUserObj } from "../types";
-import { getConfig } from "./config";
+import { getConfig, getTeamConfig } from "./config";
 
 export const getMsgUser = (msg: IObj): IUserObj => msg.message.user;
 
@@ -10,8 +10,6 @@ export const getMentionedUser = (msg: IObj) => {
   return match ? { name: match[1] } : null;
 };
 
-export const getAllUsers = (): Promise<string[]> => getConfig("users");
-
 export const atUser = (username: string): string =>
   username[0] !== "@" ? `@${username}` : username;
 
@@ -19,9 +17,11 @@ export const getTeam = async (day: string): Promise<string[]> =>
   getConfig("teams")
     .then((x) => x[day]);
 
-export const getTuesdayTeam = (): Promise<string[]> => getTeam("tues");
+export const getTuesdayTeam = (): Promise<string[]> => getTeamConfig("tues", "roster");
 
-export const getWednesdayTeam = (): Promise<string[]> => getTeam("wed");
+export const getWednesdayTeam = (): Promise<string[]> => getTeamConfig("wed", "roster");
+
+export const getAllPlayers = (): Promise<string[]> => getTeamConfig("all", "roster");
 
 export const onTuesdayTeam = (username: string): Promise<boolean> =>
   getTuesdayTeam()
@@ -31,9 +31,6 @@ export const onWednesdayTeam = (username: string): Promise<boolean> =>
   getWednesdayTeam()
     .then((x) => x.includes(username));
 
-export const assertTuesdayTeam = async (username: string): Promise<void> => {
-  const team = await getTuesdayTeam();
-  if (!team.includes(username)) {
-    throw new Error(`Sorry ${username}, but you are not on the amazing Tuesday team`);
-  }
-};
+export const onAnyTeam = (username: string): Promise<boolean> =>
+  getAllPlayers()
+    .then((x) => x.includes(username));

@@ -1,52 +1,53 @@
 import _ from "lodash";
-import { IRobot, IUserObj } from "../types";
+import R from "ramda";
+import { IRobot } from "../types";
 import { robotBrainGet, robotBrainSet } from "./brain";
 import { gamedayMsg } from "./gameday";
 
-export const alreadyCheckedInMsg = (username: string, gameNumber: number): string =>
-  gamedayMsg(`${username} is already checked in for game ${gameNumber}`);
+export const alreadyCheckedInMsg = (username: string, gameNumber: number, day: string): string =>
+  gamedayMsg(`${username} is already checked in for ${day} game ${gameNumber}`);
 
-export const alreadyCheckedOutMsg = (username: string, gameNumber: number): string =>
-  gamedayMsg(`${username} is already checked out for game ${gameNumber}`);
+export const alreadyCheckedOutMsg = (username: string, gameNumber: number, day: string): string =>
+  gamedayMsg(`${username} is already checked out for ${day} game ${gameNumber}`);
 
-export const checkedInMsg = (username: string, gameNumber: number): string =>
-  gamedayMsg(`Checked in ${username} for game ${gameNumber}`);
+export const checkedInMsg = (username: string, gameNumber: number, day: string): string =>
+  gamedayMsg(`Checked in ${username} for ${day} game ${gameNumber}`);
 
-export const checkedOutMsg = (username: string, gameNumber: number): string =>
-  gamedayMsg(`Checked out ${username} for game ${gameNumber}`);
+export const checkedOutMsg = (username: string, gameNumber: number, day): string =>
+  gamedayMsg(`Checked out ${username} for ${day} game ${gameNumber}`);
 
-export const checkIn = (user: IUserObj, robot: IRobot, gameNumber: number) =>
-  getCheckedInUsers(robot, gameNumber)
+export const checkIn = R.curry((robot: IRobot, gameNumber: number, day: string, username: string) =>
+  getCheckedInUsers(robot, gameNumber, day)
   .then((users) =>
-    _.includes(users, user.name)
-      ? alreadyCheckedInMsg(user.name, gameNumber)
-      : robotBrainSet(robot, getGameKey(gameNumber), users.concat(user.name))
-        .then((x) => checkedInMsg(user.name, gameNumber)),
-  );
+    users.includes(username)
+      ? alreadyCheckedInMsg(username, gameNumber, day)
+      : robotBrainSet(robot, getGameKey(gameNumber, day), users.concat(username))
+        .then((x) => checkedInMsg(username, gameNumber, day)),
+  ));
 
-export const checkOut = (user: IUserObj, robot: IRobot, gameNumber: number) =>
-  getCheckedInUsers(robot, gameNumber)
+export const checkOut = R.curry((robot: IRobot, gameNumber: number, day: string, username: string) =>
+  getCheckedInUsers(robot, gameNumber, day)
   .then((users) =>
-    _.includes(users, user.name)
-      ? robotBrainSet(robot, getGameKey(gameNumber), _.without(users, user.name))
-        .then((x) => checkedOutMsg(user.name, gameNumber))
-      : alreadyCheckedOutMsg(user.name, gameNumber),
-  );
+    users.includes(username)
+      ? robotBrainSet(robot, getGameKey(gameNumber, day), _.without(users, username))
+        .then((x) => checkedOutMsg(username, gameNumber, day))
+      : alreadyCheckedOutMsg(username, gameNumber, day),
+  ));
 
-export const getCheckedInUsers = (robot: IRobot, gameNumber: number): Promise<string[]> =>
-robotBrainGet(robot, getGameKey(gameNumber))
-  .then((users) => users || []);
+export const getCheckedInUsers = (robot: IRobot, gameNumber: number, day: string): Promise<string[]> =>
+  robotBrainGet(robot, getGameKey(gameNumber, day))
+    .then((users) => users || []);
 
-export const getCheckedInUsersMsg = (robot: IRobot, gameNumber: number): Promise<string> =>
-  getCheckedInUsers(robot, gameNumber)
+export const getCheckedInUsersMsg = (robot: IRobot, gameNumber: number, day: string): Promise<string> =>
+  getCheckedInUsers(robot, gameNumber, day)
     .then((users) => gamedayMsg(
-      formatCheckedInUsersMsg(users, gameNumber),
+      formatCheckedInUsersMsg(users, gameNumber, day),
     ));
 
-export const formatCheckedInUsersMsg = (users: string[], gameNumber: number): string =>
-  [`*Game ${gameNumber}*`, ""].concat(
+export const formatCheckedInUsersMsg = (users: string[], gameNumber: number, day: string): string =>
+  [`*Game ${gameNumber}* (${day})`, ""].concat(
     users.length ? users : ["<< crickets >>"],
   ).join("\n");
 
-export const getGameKey = (gameNumber: number): string =>
-  `game_${gameNumber}_checkin`;
+export const getGameKey = (gameNumber: number, day: string): string =>
+  `game_${gameNumber}_${day}_checkin`;

@@ -4,17 +4,17 @@ import { Table, TableColumn } from './table'
 import { valueOrDash } from './util'
 
 
-export const getLineupTable = (ssKey, ssIdx, ssRange, tableOpts = {}) =>
-  fetchLineup(ssKey, ssIdx, ssRange)
+export const getLineupTable = (ssKey, ssIdx, tableOpts = {}) =>
+  fetchLineup(ssKey, ssIdx)
   .then(parseLineup)
   .then(lineup => buildLineupTable(lineup, tableOpts))
 
-export const getLineupMessage = (ssKey, ssIdx, ssRange) =>
-  fetchLineup(ssKey, ssIdx, ssRange)
+export const getLineupMessage = (ssKey, ssIdx) =>
+  fetchLineup(ssKey, ssIdx)
   .then(parseLineup)
   .then(buildLineupMessage)
 
-export const fetchWorksheet = (ssKey, ssIdx, ssRange) =>
+export const fetchWorksheet = (ssKey, ssIdx) =>
   new Promise((resolve, reject) =>
     new GoogleSpreadsheet(ssKey).getInfo((err, info) => {
       if (err) {
@@ -28,8 +28,8 @@ export const fetchWorksheet = (ssKey, ssIdx, ssRange) =>
     })
   )
 
-export const fetchLineup = (ssKey, ssIdx, ssRange) =>
-  fetchWorksheet(ssKey, ssIdx, ssRange)
+export const fetchLineup = (ssKey, ssIdx) =>
+  fetchWorksheet(ssKey, ssIdx)
 
 export const parseLineup = lineup =>
   shouldPublish(lineup)

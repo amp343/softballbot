@@ -1,6 +1,8 @@
 import _ from "lodash";
 import moment from "moment";
+import { IMsgObj } from "../types";
 import { getConfig } from "./config";
+import { getAllPlayers } from "./users";
 import { codeBlock } from "./util";
 
 export const gamedayMsg = (msg: string): string => {
@@ -40,3 +42,36 @@ export const getGamedays = (): number[] =>
 export const getNextGameNumber = (): Promise<number> =>
   getConfig("games").
   then((cfg) => cfg.next);
+
+export const getDayFromMsg = (msg: IMsgObj, matchIdx: number = 0): string => {
+  let s;
+  try {
+    s = getMatchFromMsg(msg, matchIdx);
+  } catch (e) {
+    throw new Error("No day was given in your message. You need to supply the day: 'tues' or 'wed'");
+  }
+  if (["tuesday", "tues", "tue"].includes(s)) {
+    return "tues";
+  } else if (["wednesday", "wed"].includes(s)) {
+    return "wed";
+  } else if (s === "") {
+    throw new Error("Doesn't look like you provided a day; try adding 'tues' or 'wed'");
+  } else {
+    throw new Error(`Did not understand the day in your message: '${s}' is not like 'tues' or 'wed'`);
+  }
+};
+
+export const getMatchFromMsg = (msg: IMsgObj, matchIdx: number = 0): string =>
+  msg.match[matchIdx].trim().toLowerCase();
+
+export const getUsernameFromMsg = async (msg: IMsgObj, matchIdx: number = 0): Promise<string> => {
+  const username = msg.match[matchIdx].trim();
+  if (!username || username === "") {
+    throw new Error(`Username appears to be missing`);
+  }
+  const allPlayers = await getAllPlayers();
+  if (!allPlayers.includes(username)) {
+    throw new Error(`Sorry, I don\'t know ${username}`);
+  }
+  return username;
+};
