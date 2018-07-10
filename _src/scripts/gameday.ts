@@ -71,7 +71,7 @@ export const getUsernameFromMsg = async (msg: IMsgObj, matchIdx: number = 0): Pr
   }
   const allPlayers = await getAllPlayers();
   if (!allPlayers.includes(username)) {
-    throw new Error(`Sorry, I don\"t know ${username}`); "";
+    throw new Error(`Sorry, I don\'t know ${username}`);
   }
   return username;
 };
