@@ -23,6 +23,7 @@
     "@types/node": "^10.3.4",
     "@types/ramda": "^0.25.33",
     "@types/request-promise": "^4.1.41",
+    "dotenv": "^4.0.0",
     "fast-csv": "^2.0.0",
     "google-spreadsheet": "^2.0.4",
     "hubot": "^2.10.0",
@@ -43,6 +44,5 @@
     "typescript": "^2.9.2"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0"
   }
 }
