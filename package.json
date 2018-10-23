@@ -8,30 +8,25 @@
     "node": "9.5.x"
   },
   "scripts": {
-    "build": "yarn && tsc --emitDeclarationOnly && babel _src --out-dir src --extensions \".ts,.js\"",
+    "build:install": "yarn",
+    "build:install:dev": "npm run build:install",
+    "build:install:prod": "yarn --production",
+    "build:ts": "tsc -p .",
+    "build": "npm run build:install && npm run build:ts",
+    "build:dev": "npm run build",
+    "build:prod": "npm run build:install:prod && npm run build:ts",
     "start": "npm run build && ./bin/hubot",
     "start:dev": "docker-compose up -d && yarn start",
-    "start:prod": "./bin/hubot -a slack"
+    "start:prod": "npm run build:prod && ./bin/hubot -a slack"
   },
   "dependencies": {
-    "@babel/cli": "^7.0.0-beta.51",
-    "@babel/core": "^7.0.0-beta.51",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.51",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.51",
-    "@babel/polyfill": "^7.0.0-beta.51",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-typescript": "^7.0.0-beta.51",
-    "@babel/register": "^7.0.0-beta.51",
     "@types/hubot": "^2.19.2",
     "@types/lodash": "^4.14.110",
     "@types/node": "^10.3.4",
     "@types/ramda": "^0.25.33",
     "@types/request-promise": "^4.1.41",
-    "babel-plugin-import": "^1.8.0",
-    "dotenv": "^4.0.0",
     "fast-csv": "^2.0.0",
     "google-spreadsheet": "^2.0.4",
-    "googleapis": "^5.2.1",
     "hubot": "^2.10.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-help": "^0.1.1",
@@ -50,5 +45,6 @@
     "typescript": "^2.9.2"
   },
   "devDependencies": {
+    "dotenv": "^4.0.0"
   }
 }
