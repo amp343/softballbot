@@ -16,7 +16,7 @@
 //   amp343
 //
 
-import R from "ramda";
+import * as R from "ramda";
 import { IObj } from "../types";
 import { program } from "../util/fn";
 import { checkIn, checkOut, getCheckedInUsersMsg } from "./checkin";

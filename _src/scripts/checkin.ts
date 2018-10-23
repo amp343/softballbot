@@ -1,5 +1,5 @@
-import _ from "lodash";
-import R from "ramda";
+import * as _ from "lodash";
+import * as R from "ramda";
 import { IRobot } from "../types";
 import { robotBrainGet, robotBrainSet } from "./brain";
 import { gamedayMsg } from "./gameday";

@@ -1,4 +1,4 @@
-import R from "ramda";
+import * as R from "ramda";
 import { IRobot } from "../types";
 
 export const robotBrainGet = R.curry((robot: IRobot, key: string): Promise<any> => {

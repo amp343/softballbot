@@ -1,5 +1,4 @@
-import _ from 'lodash'
-import GoogleSpreadsheet from 'google-spreadsheet'
+import * as GoogleSpreadsheet from 'google-spreadsheet'
 import { Table, TableColumn } from './table'
 import { valueOrDash } from './util'
 

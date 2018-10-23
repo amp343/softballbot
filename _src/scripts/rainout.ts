@@ -1,4 +1,4 @@
-import jsdom from "jsdom";
+import * as jsdom from "jsdom";
 import { IRainoutResponseJson } from "../types";
 import { program } from "../util/fn";
 

@@ -1,6 +1,6 @@
-import csv from "fast-csv";
-import fs from "fs";
-import _ from "lodash";
+import * as csv from "fast-csv";
+import * as fs from "fs";
+import * as _ from "lodash";
 import { program } from "../util/fn";
 
 export const getQuote = (type: string): Promise<string> =>

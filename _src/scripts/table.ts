@@ -1,7 +1,14 @@
-import _ from "lodash";
 import { codeBlock, valueOrEmpty } from "./util";
 
 export class Table {
+  rows: any[]
+  columns: any[]
+  opts: {
+    colDelim: string,
+    headerDelim: string,
+    cellPadding: number,
+  }
+
   constructor(columns, rows, opts = {}) {
     this.rows = rows;
     this.opts = this.initOptions(opts);
@@ -107,6 +114,10 @@ export class Table {
 }
 
 export class TableColumn {
+  label: string
+  accessor: any
+  maxLen: number
+
   constructor(label, accessor) {
     this.label = label;
     this.accessor = accessor;

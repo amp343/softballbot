@@ -1,7 +1,7 @@
 import * as _ from "lodash";
-import moment from "moment";
+import * as moment from "moment";
 import * as R from "ramda";
-import rp from "request-promise-native";
+import * as rp from "request-promise-native";
 import { IFormattedWeatherResult, IWeatherResponseJson, IWeatherResult } from "../types";
 import { mapIndexed, program } from "../util/fn";
 

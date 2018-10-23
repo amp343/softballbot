@@ -1,5 +1,5 @@
-import _ from "lodash";
-import moment from "moment";
+import * as _ from "lodash";
+import * as moment from "moment";
 import { IMsgObj } from "../types";
 import { getConfig } from "./config";
 import { getAllPlayers } from "./users";
